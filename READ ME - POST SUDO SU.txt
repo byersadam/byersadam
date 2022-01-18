@@ -1,0 +1,39 @@
+[17:51, 09/01/2022] Mr.green: sudo apt update
+apt install python3-pip
+
+[17:51, 09/01/2022] Mr.green: pip install awscli
+[17:51, 09/01/2022] Mr.green: aws configure
+aws ec2 describe-instances | grep PublicIpAddress > hosts
+[17:51, 09/01/2022] Mr.green: describe
+apt install ansible
+run playbook containing docker setup script
+sudo systemctl status docker
+
+
+---
+- hosts: localhost
+  become: true
+
+  tasks:
+    - name: Install aptitude using apt 
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+    - name: Install aptitude using apt 
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu xenial stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt: update_cache=yes name=docker-ce state=latest
